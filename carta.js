@@ -19,44 +19,36 @@ env.addEventListener("keypress", e => {
   if(e.key === "Enter" || e.key === " "){ e.preventDefault(); toggle(); }
 });
 
-/* Corazones de fondo */
+/* corazones fondo */
 const cvs = document.getElementById("bg-hearts");
 const ctx = cvs.getContext("2d");
 let W=0,H=0,hearts=[], raf;
-
 function resize(){ W=cvs.width=innerWidth; H=cvs.height=innerHeight; }
 addEventListener("resize", resize, {passive:true}); resize();
-
 function rand(a,b){ return Math.random()*(b-a)+a }
 function spawn(n=34){
   hearts = [];
-  for(let i=0;i<n;i++){
-    hearts.push({ x: rand(0,W), y: rand(0,H), s: rand(8,18), a: rand(.08,.20), t: rand(0,Math.PI*2), v: rand(.3,.8) });
-  }
+  for(let i=0;i<n;i++) hearts.push({ x:rand(0,W), y:rand(0,H), s:rand(8,18), a:rand(.08,.20), t:rand(0,Math.PI*2), v:rand(.3,.8) });
 }
-function heartPath(x, y, s){
-  ctx.moveTo(x, y);
-  ctx.bezierCurveTo(x, y - s*0.6, x - s, y - s*0.1, x - s, y + s*0.4);
-  ctx.bezierCurveTo(x - s, y + s, x - s*0.2, y + s*1.2, x, y + s*1.5);
-  ctx.bezierCurveTo(x + s*0.2, y + s*1.2, x + s, y + s, x + s, y + s*0.4);
-  ctx.bezierCurveTo(x + s, y - s*0.1, x, y - s*0.6, x, y);
+function heartPath(x,y,s){
+  ctx.moveTo(x,y);
+  ctx.bezierCurveTo(x,y-s*.6,x-s,y-s*.1,x-s,y+s*.4);
+  ctx.bezierCurveTo(x-s,y+s,x-s*.2,y+s*1.2,x,y+s*1.5);
+  ctx.bezierCurveTo(x+s*.2,y+s*1.2,x+s,y+s,x+s,y+s*.4);
+  ctx.bezierCurveTo(x+s,y-s*.1,x,y-s*.6,x,y);
 }
 function tick(){
   ctx.clearRect(0,0,W,H);
   for(const h of hearts){
-    h.t += 0.01;
-    h.y -= h.v * 0.6;
-    if(h.y < -30){ h.y = H + 30; h.x = rand(0,W); }
-    ctx.save(); ctx.globalAlpha = h.a;
-    ctx.beginPath(); heartPath(h.x + Math.sin(h.t)*6, h.y, h.s);
-    ctx.fillStyle = "rgba(255,106,166,.85)"; ctx.fill();
-    ctx.restore();
+    h.t+=0.01; h.y-=h.v*0.6; if(h.y<-30){ h.y=H+30; h.x=rand(0,W); }
+    ctx.save(); ctx.globalAlpha=h.a; ctx.beginPath(); heartPath(h.x+Math.sin(h.t)*6,h.y,h.s);
+    ctx.fillStyle="rgba(255,106,166,.85)"; ctx.fill(); ctx.restore();
   }
-  raf = requestAnimationFrame(tick);
+  raf=requestAnimationFrame(tick);
 }
 spawn(); tick();
 
-/* 10 razones: poblar tarjetas */
+/* razones: poblar y habilitar flip táctil */
 const RAZONES = [
   ["Tu risa","Siempre me alegra el día."],
   ["Tu paciencia","Me hace sentir tranquilo contigo."],
@@ -66,18 +58,16 @@ const RAZONES = [
   ["Tu voz","Me gusta mucho escucharte."],
   ["Tu valentía","Admiro tu forma de enfrentar todo."],
   ["Tu humor","Siempre sabes cómo hacerme reír."],
-  ["Tu ternura","La siento en cada uno de tus gestos bonitos conmigo."],
-  ["Tu presencia","Hace que mis días sean mucho mejores."]
+  ["Tu ternura","La siento en cada gesto bonito."],
+  ["Tu presencia","Hace que mis días sean mejores."]
 ];
-
 const contRaz = document.getElementById("razones");
 RAZONES.forEach(([front, back])=>{
   const el = document.createElement("div");
   el.className = "flip";
-  el.innerHTML = `
-    <div class="flip-inner">
-      <div class="face front"><strong>${front}</strong></div>
-      <div class="face back">${back}</div>
-    </div>`;
+  el.innerHTML = `<div class="flip-inner"><div class="face front"><strong>${front}</strong></div><div class="face back">${back}</div></div>`;
+  el.tabIndex = 0;
+  el.addEventListener("click", ()=> el.classList.toggle("is-flipped"));
+  el.addEventListener("keypress", e => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); el.classList.toggle("is-flipped"); }});
   contRaz.appendChild(el);
 });
