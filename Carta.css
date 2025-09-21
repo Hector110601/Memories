@@ -1,0 +1,148 @@
+:root{
+  --bg:#fff7fb; --fg:#1f2328; --mut:#6e7781; --brand:#ff6aa6; --card:#ffffff; --ink:#222; --bd:14%;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0f0b10; --fg:#e6edf3; --mut:#9aa2ad; --brand:#ff84b4; --card:#16121a; --ink:#e6edf3; --bd:22% }
+}
+
+*{ box-sizing:border-box }
+html,body{ height:100% }
+body{
+  margin:0; color:var(--ink);
+  background:
+    radial-gradient(1000px 700px at 10% -20%, rgba(255,106,166,0.16), transparent 60%),
+    radial-gradient(900px 600px at 110% 10%, rgba(255,178,214,0.20), transparent 55%),
+    var(--bg);
+  font:16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+}
+
+/* corazones fondo */
+#bg-hearts{ position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:0 }
+
+/* layout */
+.wrap{ position:relative; z-index:1; min-height:100%; padding:28px 16px; display:grid; gap:22px; place-items:center }
+.hero{ text-align:center; color:var(--fg) }
+.hero h1{ margin:0 0 6px; font-size:clamp(24px,4vw,36px) }
+.hero p{ margin:0; color:var(--mut) }
+
+/* SOBRE */
+.envelope{ cursor:pointer; user-select:none; outline:0; position:relative } /* ancla de ::before/::after */
+.envelope .hint{ text-align:center; color:var(--mut); font-size:14px; margin-top:10px }
+
+/* contenedor que recorta */
+.env-body{
+  position:relative;
+  width:min(92vw,560px);
+  height:380px;
+  perspective:1400px;
+  overflow:hidden;
+  border-radius:16px;
+}
+.env-body::before{
+  content:"";
+  position:absolute; inset:0;
+  border-radius:16px;
+  background:var(--card);
+  border:1px solid color-mix(in oklab, var(--fg) var(--bd), transparent);
+  box-shadow:0 12px 40px rgba(0,0,0,.12);
+}
+
+/* solapa */
+.flap{
+  position:absolute; left:0; right:0; top:0; height:62%;
+  background:linear-gradient(180deg, color-mix(in oklab, var(--brand) 22%, transparent), transparent 70%), var(--card);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top; transform: rotateX(0deg);
+  border-top-left-radius:16px; border-top-right-radius:16px;
+  border-bottom:1px solid color-mix(in oklab, var(--fg) 12%, transparent);
+  transition: transform .8s cubic-bezier(.2,.7,.2,1);
+  z-index:3;
+}
+
+/* carta (papel) */
+.paper{
+  position:absolute; left:16px; right:16px;
+  top:30%; bottom:16px;
+  background:var(--card);
+  border:1px solid color-mix(in oklab, var(--fg) 14%, transparent);
+  border-radius:12px; padding:18px 18px 14px;
+  transform: translateY(42%);
+  opacity:0;
+  transition: transform .7s cubic-bezier(.2,.7,.2,1), opacity .4s ease;
+  overflow:auto; z-index:2;
+}
+
+/* sello */
+.seal{
+  position:absolute; left:50%; top:50%;
+  transform: translate(-50%, -50%);
+  background: var(--brand); color:#fff; width:56px; height:56px; display:grid; place-items:center;
+  border-radius:50%; box-shadow:0 6px 16px rgba(0,0,0,.18); border:2px solid #fff;
+  transition: transform .6s ease, opacity .6s ease;
+  z-index:4;
+}
+
+/* carta interior */
+.letter-head{ display:flex; justify-content:space-between; gap:8px; margin-bottom:8px; color:var(--mut); font-size:14px }
+.letter-body p{ margin:0 0 10px; text-align:justify; hyphens:auto }
+.letter-sign{ margin-top:10px }
+.letter-sign .name{ font-weight:700 }
+
+/* estado abierto */
+.envelope.open .flap{ transform: rotateX(160deg) }
+.envelope.open .paper{ transform: translateY(-18%); opacity:1 }
+.envelope.open .seal{ transform: translate(-50%,-50%) scale(0.6); opacity:0 }
+
+/* 10 razones */
+.reasons{ width:min(92vw,980px) }
+.reasons h2{ margin:6px 0 10px; font-size:clamp(20px,3.2vw,26px); font-weight:800 }
+
+/* CENTRADO DE ÚLTIMA FILA */
+.grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 320px));
+  justify-content: center;   /* centra columnas cuando sobran huecos */
+  gap: 12px;
+}
+.flip{ width: 100%; perspective:1000px }
+.flip-inner{
+  position:relative; transform-style:preserve-3d; transition:transform .6s;
+  border:1px solid color-mix(in oklab, var(--fg) 18%, transparent); border-radius:14px; padding:14px; min-height:110px;
+  background:linear-gradient(180deg, color-mix(in oklab, var(--brand) 12%, transparent), transparent 60%), var(--card);
+}
+.flip:hover .flip-inner{ transform: rotateY(180deg) }
+.face{
+  position:absolute; inset:0; padding:14px; backface-visibility:hidden;
+  display:flex; align-items:center; justify-content:center; text-align:center;
+}
+.back{ transform: rotateY(180deg); color:var(--mut) }
+
+/* GIFs pequeños a los lados del sobre */
+.envelope::before,
+.envelope::after{
+  content:"";
+  position:absolute;
+  top:50%;
+  transform: translateY(-50%);
+  width:96px; height:96px;
+  background-size:cover; background-position:center; background-repeat:no-repeat;
+  opacity:.9; pointer-events:none; z-index:2;
+}
+.envelope::before{ left:-120px; background-image:url("Imagenes/Gatitos.gif"); }
+.envelope::after{  right:-120px; background-image:url("Imagenes/Gatitos1.gif"); }
+@media (max-width:640px){
+  .envelope::before, .envelope::after{ width:64px; height:64px }
+  .envelope::before{ left:-76px } .envelope::after{ right:-76px }
+}
+
+/* accesibilidad y print */
+@media (prefers-reduced-motion: reduce){
+  .envelope::before, .envelope::after{ display:none }
+}
+@media print{
+  body{ background:#fff }
+  #bg-hearts{ display:none }
+  .wrap{ padding:0 }
+  .env-body::before{ box-shadow:none }
+  .envelope::before, .envelope::after{ display:none }
+}

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Carta de cumpleaños</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="carta.css">
+</head>
+<body>
+  <canvas id="bg-hearts" aria-hidden="true"></canvas>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1>Para <span id="nombre">Liz</span></h1>
+      <p>Con cariño de <span id="remitente">Héctor</span></p>
+    </section>
+
+    <section class="envelope" id="envelope" role="button" tabindex="0" aria-label="Abrir carta">
+      <div class="env-body">
+        <div class="flap"></div>
+        <div class="paper">
+          <div class="letter-head">
+            <div class="from"><span id="fecha"></span></div>
+            <div class="to">Querida <strong id="dest">Liz</strong></div>
+          </div>
+          <div class="letter-body" id="texto">
+            <p>Hoy quiero decirte que eres una persona increíble, cariñosa, detallista, que de verdad me alegra cada día. Desde que pasamos tiempo juntos, me he dado cuenta de lo feliz que soy contigo.</p>
+            <p>Te deseo todo lo bonito y lo mejor, ojalá que este año te traiga muchas sonrisas como las que tú me has dado en este tiempo que hemos estado juntos.</p>
+            <p>Gracias por ser tú, por hacerme sentir especial y por dejarme compartir contigo pedacitos de tu mundo. ¡Me encanta tenerte en mi vida y me emociona todo lo que aún nos queda por pasar juntos!</p>
+            <p>¡De verdad que me hacen falta palabras para expresarte cuanto te quiero! ♥️ </p>
+            <p>¡¡¡FELIZ CUMPLEAÑOS LIZ!!!</p>
+          </div>
+          <div class="letter-sign">
+            <p>Con todo mi cariño,</p>
+            <p id="firma">Héctor</p>
+          </div>
+        </div>
+        <div class="seal">💌</div>
+      </div>
+      <div class="hint"></div>
+    </section>
+
+    <!-- 10 razones -->
+    <section class="reasons">
+      <h2 style="text-align: center;">10 razones por las que te quiero</h2>
+      <div class="grid" id="razones"></div>
+    </section>
+  </main>
+
+  <script src="carta.js"></script>
+</body>
+</html>
